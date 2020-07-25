@@ -5,6 +5,8 @@
 #START
 
 ##### Load config
+SLBVER="~~ sage-linux-backup version 1.5 July 2020 ~~"
+
 if [ -f "config.sh" ]; then
   . config.sh
 else
@@ -17,8 +19,6 @@ if [ ! -f "exclude.list" ]; then
   exit
 fi
 
-SLBVER="~~ sage-linux-backup version 1.5 July 2020 ~~"
-
 ##### Functions
 
 backup()
@@ -28,7 +28,7 @@ backup()
     LOGVAR+=$(echo -e "Backup started at $SDATETIME" | tee -a $DESDIR/$LOGFILENAME)'\n'
     LOGVAR+=$(echo -e "Backup $HOST $SRCDIR to $DESDIR" | tee -a $DESDIR/$LOGFILENAME)'\n'
     # run backup
-    ##### tar -cpzvf $DESDIR/$FILENAME --directory=$SRCDIR --exclude-from $EXCLIST . &>> $DESDIR/$LOGFILENAME
+    tar -cpzvf $DESDIR/$FILENAME --directory=$SRCDIR --exclude-from $EXCLIST . &>> $DESDIR/$LOGFILENAME
     EDATETIME=`date "+%Y-%m-%d %H:%M:%S"`             # get date and time
     DURATION=`dateutils.ddiff -f "%H hours and %M minutes and %S seconds" "$SDATETIME" "$EDATETIME"`
     DESDIRLS=`find $DESDIR/* -maxdepth 1 -printf '%CY-%Cm-%Cd - %f  \t- %s\n' | numfmt --to=iec --suffix=B --field 5 --format='%3.3f' | sed 's/.000//'`
@@ -40,12 +40,10 @@ backup()
     LOGVAR+=$(echo -e "$DESDIR contents:")'\n'
     LOGVAR+=$(echo -e "$DESDIRLS")'\n\n'
     LOGVAR+=$(echo -e "$SLBVER")'\n'
-    echo -e "$LOGVAR"
-    ##### echo -e "$LOGVAR" | mail -s "$HOST Backup success - $DATE" $EMAIL
+    echo -e "$LOGVAR" | mail -s "$HOST Backup success - $DATE" $EMAIL
   else
     # MOUNT not mounted - send email
-    echo "$MOUNT not mounted on $HOST"
-    ##### echo "$MOUNT not mounted on $HOST" | mail -s "$HOST Backup failed - $DATE" $EMAIL
+    echo "$MOUNT not mounted on $HOST" | mail -s "$HOST Backup failed - $DATE" $EMAIL
   fi
 
 } # end of backup
@@ -54,17 +52,17 @@ cleanup()
 {
   DESDIR=DESDIR/*
 
-  if grep -qs "$MOUNT" /proc/mounts; then
+  if grep -qs "$DESMNT" /proc/mounts; then
     # MOUNT mounted - proceed with backup cleanup
     find $DESDIR -mtime +$NDAYS -type f -delete
   else
-    mount "$MOUNT"
+    mount "$DESMNT"
     if [ $? -eq 0 ]; then
       # MOUNT was mounted successfully
       find $DESDIR -mtime +$NDAYS -type f -delete
     else
       # MOUNT not mounted - send email
-      echo "$MOUNT not mounted on $HOST" | mail -s "$HOST Backup cleanup failed - $DATETIME" sixfootscott@gmail.com
+      echo "$DESMNT not mounted on $HOST" | mail -s "$HOST Backup cleanup failed - $SDATETIME" $EMAIL
     fi
   fi
 
