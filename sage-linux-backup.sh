@@ -9,7 +9,14 @@ if [ -f "config.sh" ]; then
   . config.sh
 else
   echo "config.sh missing"
+  exit
 fi
+
+if [ ! -f "exclude.list" ]; then
+  echo "exclude.list missing"
+  exit
+fi
+
 SLBVER="~~ sage-linux-backup version 1.5 July 2020 ~~"
 
 ##### Functions
