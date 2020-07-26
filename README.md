@@ -17,9 +17,9 @@ Install:
 
 Configure:
 * /etc/ssmtp/ssmtp.conf
-- check out https://www.cyberciti.biz/tips/linux-use-gmail-as-a-smarthost.html as a guide
+  - check out https://www.cyberciti.biz/tips/linux-use-gmail-as-a-smarthost.html as a guide
 * /etc/ssmtp/revaliases
-- i.e. <user>:<ssmpt email address>:<ssmpt IP>:<ssmtp port>
+  - i.e. <user>:<ssmpt email address>:<ssmpt IP>:<ssmtp port>
 * mount / external destination
 
 # Setup
@@ -29,28 +29,30 @@ Configure:
 * cp exclude-sample.list exclude.list # this is preferred over renaming to avoid wiping if updating to new release
 * update exclude.list # as required, but I've set with the most common excludes
 * confirm scripts have execute permissions
-+ sage-linux=backup.sh should be executable
-+ config.sh should be executable
-+ exclude.list should be readable
+  - sage-linux=backup.sh should be executable
+  - config.sh should be executable
+  - exclude.list should be readable
 * add the following entries to cron # set timing as desired - examples below are backup at 4am on Sunday and cleanup at 6am on Sunday
+```
 0 4 * * SUN /usr/local/bin/sage-linux-backup/sage-linux-backup.sh -b >/dev/null 2>&1
 0 6 * * SUN /usr/local/bin/sage-linux-backup/sage-linux-backup.sh -c >/dev/null 2>&1
+```
 
 # Change log
 * 1.0 04-05-2017
-+ first release
+  - first release
 * 1.1 15-10-2018
-+ check mount and email if mount fails
+  - check mount and email if mount fails
 * 1.2 19-11-2018
-+ update DESDIR with HOST instead of hard coded hostname
-+ add cleanup post re-mount + make hostname a variable
+  - update DESDIR with HOST instead of hard coded hostname
+  - add cleanup post re-mount + make hostname a variable
 * 1.3 22-11-2018
-+ updated email to include some log output
+  - updated email to include some log output
 * 1.4 22-01-2019
-+ added directory output to email
-* 1.0.0 26-07-2020
-+ cleaned up for git - set to version 1.0.0
-+ merged backup and cleanup into single script with functions
-+ setup config such that only config that needs to be edited by user is in config.sh
+  - added directory output to email
+* 1.0.0 31-07-2020
+  - cleaned up for git - set to version 1.0.0
+  - merged backup and cleanup into single script with functions
+  - setup config such that only config that needs to be edited by user is in config.sh
  
 # END
