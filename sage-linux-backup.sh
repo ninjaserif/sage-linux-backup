@@ -95,7 +95,7 @@ while [ "$1" != "" ]; do
                           ;;
         * )               echo "invalid parameter given"
                           usage
-                          exit
+                          exit 1
   esac
     shift
 done
@@ -103,5 +103,6 @@ done
 # no parameters given
 echo "no parameter given"
 usage
+exit 1
 
 ##### END
