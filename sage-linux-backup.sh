@@ -2,8 +2,7 @@
 
 # sage-linux-backup
 
-#START
-
+##### START
 if [ -f "config.sh" ]; then
   . config.sh
 else
@@ -24,7 +23,7 @@ SDATETIME=`date "+%Y-%m-%d %H:%M:%S"`  # get date and time
 FILENAME=$HOST-backup-$DATE.tar.gz     # set tar.gz filename
 LOGFILENAME=$HOST-backup-$DATE.log     # set log filename
 EXCLIST=$SCRIPTDIR/exclude.list        # exclude list
-DESDIR=$DESMNT/$HOST                   # set destination directory
+DESDIR=$DESMNT/$HOST"test"             # set destination directory
 SLBVER="~~ sage-linux-backup version 1.0.0 July 2020 ~~"
 
 ##### Functions
@@ -59,16 +58,14 @@ backup()
 
 cleanup()
 {
-  DESDIR=DESDIR/*
-
   if grep -qs "$DESMNT" /proc/mounts; then
     # DESMNT mounted - proceed with backup cleanup
-    find $DESDIR -mtime +$NDAYS -type f -delete
+    find $DESDIR/* -mtime +$NDAYS -type f -delete
   else
     mount "$DESMNT"
     if [ $? -eq 0 ]; then
       # DESMNT was mounted successfully
-      find $DESDIR -mtime +$NDAYS -type f -delete
+      find $DESDIR/* -mtime +$NDAYS -type f -delete
     else
       # DESMNT not mounted - send email
       LOGVAR=$(echo -e "$DESMNT not mounted on $HOST")'\n\n'
@@ -107,4 +104,4 @@ done
 echo "no parameter given"
 usage
 
-#END
+##### END

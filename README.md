@@ -3,9 +3,11 @@ Linux file backup (tar) with logging and cleanup of old backups.  I created this
 
 # Features
 * full tar backup to remote mount location
-* exclude folders
+* output log to remote mount location - including list of all files backed up
+* exclude list of folders
 * cleanup backups on remote destination
 * email upon success / failure
+* found to work on Ubuntu and Raspberry Pi
 
 # Prerequisite
 Install:
@@ -30,7 +32,9 @@ Configure:
 + sage-linux=backup.sh should be executable
 + config.sh should be executable
 + exclude.list should be readable
-* add the following entries to cron # set timing as desired
+* add the following entries to cron # set timing as desired - examples below are backup at 4am on Sunday and cleanup at 6am on Sunday
+0 4 * * SUN /usr/local/bin/sage-linux-backup/sage-linux-backup.sh -b >/dev/null 2>&1
+0 6 * * SUN /usr/local/bin/sage-linux-backup/sage-linux-backup.sh -c >/dev/null 2>&1
 
 # Change log
 * 1.0 04-05-2017
