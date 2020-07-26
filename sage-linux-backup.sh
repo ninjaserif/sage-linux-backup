@@ -25,10 +25,9 @@ FILENAME=$HOST-backup-$DATE.tar.gz     # set tar.gz filename
 LOGFILENAME=$HOST-backup-$DATE.log     # set log filename
 EXCLIST=$SCRIPTDIR/exclude.list        # exclude list
 DESDIR=$DESMNT/$HOST                   # set destination directory
-SLBVER="~~ sage-linux-backup version 1.5 July 2020 ~~"
+SLBVER="~~ sage-linux-backup version 1.0.0 July 2020 ~~"
 
 ##### Functions
-
 backup()
 {
   if grep -qs "$DESMNT" /proc/mounts; then
@@ -82,26 +81,30 @@ cleanup()
 
 usage()
 {
-  echo "usage: sage-linux-backup.sh [[[-b backup ] | [-c cleanup] | [-h]]"
-}
+  echo "usage: sage-linux-backup.sh [[[-b backup] | [-c cleanup] | [-h help]]"
+} # end of usage
 
 ##### Main
-
 while [ "$1" != "" ]; do
-    case $1 in
-        -b | --backup )         backup
-                                exit
-                                ;;
-        -c | --cleanup )        cleanup
-                                exit
-                                ;;
-        -h | --help )           usage
-                                exit
-                                ;;
-        * )                     usage
-                                exit 1
-    esac
+  case $1 in
+        -b | --backup )   backup
+                          exit
+                          ;;
+        -c | --cleanup )  cleanup
+                          exit
+                          ;;
+        -h | --help )     usage
+                          exit
+                          ;;
+        * )               echo "invalid parameter given"
+                          usage
+                          exit
+  esac
     shift
 done
+
+# no parameters given
+echo "no parameter given"
+usage
 
 #END
