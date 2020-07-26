@@ -1,7 +1,8 @@
 # sage-linux-backup
 Linux file backup (tar) with logging and cleanup of old backups.  I created this to backup my Ubuntu and Raspberry Pi machines to a remote NAS.
 
-# Features
+
+## Features
 * full tar backup to remote mount location
 * output log to remote mount location - including list of all files backed up
 * exclude list of folders
@@ -9,7 +10,8 @@ Linux file backup (tar) with logging and cleanup of old backups.  I created this
 * email upon success / failure
 * found to work on Ubuntu and Raspberry Pi
 
-# Prerequisite
+
+## Prerequisite
 Install:
 * ssmtp (apt-get install ssmtp)
 * mailutils (apt-get install mailutils)
@@ -19,15 +21,33 @@ Configure:
 * /etc/ssmtp/ssmtp.conf
   - check out https://www.cyberciti.biz/tips/linux-use-gmail-as-a-smarthost.html as a guide
 * /etc/ssmtp/revaliases
-  - i.e. <user>:<ssmpt email address>:<ssmpt IP>:<ssmtp port>
+  - i.e. `<user>:<ssmpt email address>:<ssmpt IP>:<ssmtp port>`
 * mount / external destination
 
-# Setup
-* download release
-* cp config-sample.sh config.sh # this is preferred over renaming to avoid wiping if updating to new release
+
+## Setup
+* download latest release - https://github.com/ninjaserif/sage-linux-backup/releases/latest/
+* extract release
+```
+tar -xzf sage-linux-backup_v1.0.0.tar.gz /usr/local/bin/sage-linux-backup/
+```
+* navigate to where you extracted sage-linux-backup - i.e. cd /usr/local/bin/sage-linux-backup/
+* create your own config file # this is preferred over renaming to avoid wiping if updating to new release
+```
+cp config-sample.sh config.sh
+```
 * edit config.sh and set your configuration
-* cp exclude-sample.list exclude.list # this is preferred over renaming to avoid wiping if updating to new release
-* update exclude.list # as required, but I've set with the most common excludes
+```
+SRCDIR=/                # likely rename unchanged
+DESMNT=<remote mount>   # something like /mnt/<SERVER>/<SERVER SHARE>
+EMAIL=<email_address>   # email address to send emails
+NDAYS=30                # number of backups to keep
+```
+* create an exclude.list # this is preferred over renaming to avoid wiping if updating to new release
+```
+cp exclude-sample.list exclude.list
+```
+* (optional) update exclude.list to include any additional directories
 * confirm scripts have execute permissions
   - sage-linux=backup.sh should be executable
   - config.sh should be executable
@@ -38,7 +58,8 @@ Configure:
 0 6 * * SUN /usr/local/bin/sage-linux-backup/sage-linux-backup.sh -c >/dev/null 2>&1
 ```
 
-# Change log
+
+## Change log
 * 1.0 04-05-2017
   - first release
 * 1.1 15-10-2018
