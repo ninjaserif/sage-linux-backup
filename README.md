@@ -71,7 +71,7 @@ cp exclude-sample.list exclude.list
   - updated email to include some log output
 * 1.4 22-01-2019
   - added directory output to email
-* 1.0.0 31-07-2020
+* 1.0.0 26-07-2020
   - cleaned up for git - set to version 1.0.0
   - merged backup and cleanup into single script with functions
   - setup config such that only config that needs to be edited by user is in config.sh
