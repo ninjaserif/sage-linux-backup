@@ -78,24 +78,24 @@ cleanup()
 
 usage()
 {
-  echo "usage: sage-linux-backup.sh [[[-b backup] | [-c cleanup] | [-h help]]"
+  echo "usage: sage-linux-backup.sh [[-b backup] | [-c cleanup] | [-h help]]"
 } # end of usage
 
 ##### Main
 while [ "$1" != "" ]; do
   case $1 in
-        -b | --backup )   backup
-                          exit
-                          ;;
-        -c | --cleanup )  cleanup
-                          exit
-                          ;;
-        -h | --help )     usage
-                          exit
-                          ;;
-        * )               echo "invalid parameter given"
-                          usage
-                          exit 1
+    -b | --backup )   backup
+                      exit
+                      ;;
+    -c | --cleanup )  cleanup
+                      exit
+                      ;;
+    -h | --help )     usage
+                      exit
+                      ;;
+    * )               echo "invalid parameter given"
+                      usage
+                      exit 1
   esac
     shift
 done
