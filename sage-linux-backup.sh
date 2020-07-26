@@ -4,27 +4,35 @@
 
 #START
 
-##### Load config
-SLBVER="~~ sage-linux-backup version 1.5 July 2020 ~~"
-
 if [ -f "config.sh" ]; then
   . config.sh
 else
-  echo "config.sh missing"
-  exit
+  echo "config.sh missing - copy config-sample.sh and update with your own config"
+  exit 1
 fi
 
 if [ ! -f "exclude.list" ]; then
-  echo "exclude.list missing"
-  exit
+  echo "exclude.list missing - copy exclude-sample.list and update with your own exclude.list"
+  exit 1
 fi
+
+##### Load config
+SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+HOST=`hostname`                        # get hostname
+DATE=`date +%Y%m%d`                    # get date
+SDATETIME=`date "+%Y-%m-%d %H:%M:%S"`  # get date and time
+FILENAME=$HOST-backup-$DATE.tar.gz     # set tar.gz filename
+LOGFILENAME=$HOST-backup-$DATE.log     # set log filename
+EXCLIST=$SCRIPTDIR/exclude.list        # exclude list
+DESDIR=$DESMNT/$HOST                   # set destination directory
+SLBVER="~~ sage-linux-backup version 1.5 July 2020 ~~"
 
 ##### Functions
 
 backup()
 {
-  if grep -qs "$MOUNT" /proc/mounts; then
-    # MOUNT mounted - proceed with backup
+  if grep -qs "$DESMNT" /proc/mounts; then
+    # DESMNT mounted - proceed with backup
     LOGVAR+=$(echo -e "Backup started at $SDATETIME" | tee -a $DESDIR/$LOGFILENAME)'\n'
     LOGVAR+=$(echo -e "Backup $HOST $SRCDIR to $DESDIR" | tee -a $DESDIR/$LOGFILENAME)'\n'
     # run backup
@@ -42,8 +50,10 @@ backup()
     LOGVAR+=$(echo -e "$SLBVER")'\n'
     echo -e "$LOGVAR" | mail -s "$HOST Backup success - $DATE" $EMAIL
   else
-    # MOUNT not mounted - send email
-    echo "$MOUNT not mounted on $HOST" | mail -s "$HOST Backup failed - $DATE" $EMAIL
+    # DESMNT not mounted - send email
+    LOGVAR=$(echo -e "$DESMNT not mounted on $HOST")'\n\n'
+    LOGVAR+=$(echo -e "$SLBVER")'\n'
+    echo -e "$LOGVAR" | mail -s "$HOST Backup failed - $DATE" $EMAIL
   fi
 
 } # end of backup
@@ -53,16 +63,18 @@ cleanup()
   DESDIR=DESDIR/*
 
   if grep -qs "$DESMNT" /proc/mounts; then
-    # MOUNT mounted - proceed with backup cleanup
+    # DESMNT mounted - proceed with backup cleanup
     find $DESDIR -mtime +$NDAYS -type f -delete
   else
     mount "$DESMNT"
     if [ $? -eq 0 ]; then
-      # MOUNT was mounted successfully
+      # DESMNT was mounted successfully
       find $DESDIR -mtime +$NDAYS -type f -delete
     else
-      # MOUNT not mounted - send email
-      echo "$DESMNT not mounted on $HOST" | mail -s "$HOST Backup cleanup failed - $SDATETIME" $EMAIL
+      # DESMNT not mounted - send email
+      LOGVAR=$(echo -e "$DESMNT not mounted on $HOST")'\n\n'
+      LOGVAR+=$(echo -e "$SLBVER")'\n'
+      echo -e "$LOGVAR" | mail -s "$HOST Backup cleanup failed - $SDATETIME" $EMAIL
     fi
   fi
 
