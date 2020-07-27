@@ -24,7 +24,7 @@ FILENAME=$HOST-backup-$DATE.tar.gz     # set tar.gz filename
 LOGFILENAME=$HOST-backup-$DATE.log     # set log filename
 EXCLIST=$SCRIPTDIR/exclude.list        # exclude list
 DESDIR=$DESMNT/$HOST"test"             # set destination directory
-SLBVER="~~ sage-linux-backup version 1.0.0 26/07/2020 ~~"
+SLBVER="~~ sage-linux-backup version 1.0.0 27/07/2020 ~~"
 
 ##### Functions
 backup()

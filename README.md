@@ -8,7 +8,7 @@ Linux file backup (tar) with logging and cleanup of old backups.  I created this
 * exclude list of folders
 * cleanup backups on remote destination
 * email upon success / failure
-* found to work on Ubuntu and Raspberry Pi
+* works on various releases of Rasbian as well as Ubuntu
 
 
 ## Prerequisite
@@ -22,17 +22,24 @@ Configure:
   - check out https://www.cyberciti.biz/tips/linux-use-gmail-as-a-smarthost.html as a guide
 * /etc/ssmtp/revaliases
   - i.e. `<user>:<ssmpt email address>:<ssmpt IP>:<ssmtp port>`
-* mount / external destination
+* /etc/fstab
+  - setup automatic mount of external location as required
 
 
 ## Setup
-* download latest release - https://github.com/ninjaserif/sage-linux-backup/releases/latest/
+* download latest release.  Below is a "oneliner" to download the latest release - https://github.com/ninjaserif/sage-linux-backup/releases/latest/
+```
+LOCATION=$(curl -s https://api.github.com/repos/ninjaserif/sage-linux-backup/releases/latest \
+| grep "tag_name" \
+| awk '{print "https://github.com/ninjaserif/sage-linux-backup/archive/" substr($2, 2, length($2)-3) ".tar.gz"}') \
+; curl -L -o sage-linux-backup_latest.tar.gz $LOCATION
+```
 * extract release
 ```
-tar -xzf sage-linux-backup_v1.0.0.tar.gz /usr/local/bin/sage-linux-backup/
+sudo mkdir /usr/local/bin/sage-linux-backup && sudo tar -xvzf sage-linux-backup_latest.tar.gz --strip=1 -C /usr/local/bin/sage-linux-backup
 ```
-* navigate to where you extracted sage-linux-backup - i.e. cd /usr/local/bin/sage-linux-backup/
-* create your own config file # this is preferred over renaming to avoid wiping if updating to new release
+* navigate to where you extracted sage-linux-backup - i.e. `cd /usr/local/bin/sage-linux-backup/`
+* create your own config file ### this is preferred over renaming to avoid wiping if updating to new release
 ```
 cp config-sample.sh config.sh
 ```
@@ -43,7 +50,7 @@ DESMNT=<remote mount>   # something like /mnt/<SERVER>/<SERVER SHARE>
 EMAIL=<email_address>   # email address to send emails
 NDAYS=30                # number of backups to keep
 ```
-* create an exclude.list # this is preferred over renaming to avoid wiping if updating to new release
+* create an exclude.list ### this is preferred over renaming to avoid wiping if updating to new release
 ```
 cp exclude-sample.list exclude.list
 ```
