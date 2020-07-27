@@ -27,7 +27,8 @@ Configure:
 
 
 ## Setup
-* download latest release.  Below is a "oneliner" to download the latest release - https://github.com/ninjaserif/sage-linux-backup/releases/latest/
+* download latest release - https://github.com/ninjaserif/sage-linux-backup/releases/latest/
+Below is a "one-liner" to download the latest release
 ```
 LOCATION=$(curl -s https://api.github.com/repos/ninjaserif/sage-linux-backup/releases/latest \
 | grep "tag_name" \
@@ -56,7 +57,7 @@ cp exclude-sample.list exclude.list
 ```
 * (optional) update exclude.list to include any additional directories
 * confirm scripts have execute permissions
-  - sage-linux=backup.sh should be executable
+  - sage-linux-backup.sh should be executable
   - config.sh should be executable
   - exclude.list should be readable
 * add the following entries to cron # set timing as desired - examples below are backup at 4am on Sunday and cleanup at 6am on Sunday
@@ -78,7 +79,7 @@ cp exclude-sample.list exclude.list
   - updated email to include some log output
 * 1.4 22-01-2019
   - added directory output to email
-* 1.0.0 26-07-2020
+* 1.0.0 27-07-2020
   - cleaned up for git - set to version 1.0.0
   - merged backup and cleanup into single script with functions
   - setup config such that only config that needs to be edited by user is in config.sh
