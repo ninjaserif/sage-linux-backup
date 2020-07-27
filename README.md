@@ -28,6 +28,7 @@ Configure:
 
 ## Setup
 * download latest release - https://github.com/ninjaserif/sage-linux-backup/releases/latest/
+
 Below is a "one-liner" to download the latest release
 ```
 LOCATION=$(curl -s https://api.github.com/repos/ninjaserif/sage-linux-backup/releases/latest \
