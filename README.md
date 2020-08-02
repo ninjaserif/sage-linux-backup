@@ -99,7 +99,7 @@ cp exclude-sample.list exclude.list
   * merged backup and cleanup into single script with functions
   * setup config such that only config that needs to be edited by user is in config.sh
 * 1.0.1 02-08-2020
-  * fix running from anothe directory
+  * fix running from another directory / cron by changing directory to script_directory
   * remove test variables
 
 ## -END-
