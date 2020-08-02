@@ -22,7 +22,7 @@ Install:
 Configure:
 
 * /etc/ssmtp/ssmtp.conf
-  * check out https://www.cyberciti.biz/tips/linux-use-gmail-as-a-smarthost.html as a guide
+  * check out <https://www.cyberciti.biz/tips/linux-use-gmail-as-a-smarthost.html> as a guide
 * /etc/ssmtp/revaliases
   * i.e. `<user>:<ssmpt email address>:<ssmpt IP>:<ssmtp port>`
 * /etc/fstab
@@ -30,7 +30,7 @@ Configure:
 
 ## Setup
 
-* download latest release - https://github.com/ninjaserif/sage-linux-backup/releases/latest/
+* download latest release - <https://github.com/ninjaserif/sage-linux-backup/releases/latest/>
 
 Below is a "one-liner" to download the latest release
 
