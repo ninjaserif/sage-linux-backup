@@ -3,28 +3,30 @@
 # sage-linux-backup
 
 ##### START
-if [ -f "config.sh" ]; then
+SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+cd $SCRIPTDIR
+
+if [ -f "$SCRIPTDIR/config.sh" ]; then
   . config.sh
 else
-  echo "config.sh missing - copy config-sample.sh and update with your own config"
+  echo "$SCRIPTDIR/config.sh missing - copy config-sample.sh and update with your own config"
   exit 1
 fi
 
-if [ ! -f "exclude.list" ]; then
-  echo "exclude.list missing - copy exclude-sample.list and update with your own exclude.list"
+if [ ! -f "$SCRIPTDIR/exclude.list" ]; then
+  echo "$SCRIPTDIR/exclude.list missing - copy exclude-sample.list and update with your own exclude.list"
   exit 1
 fi
 
 ##### Load config
-SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 HOST=`hostname`                        # get hostname
 DATE=`date +%Y%m%d`                    # get date
-SDATETIME=`date "+%Y-%m-%d %H:%M:%S"`  # get date and time
+SDATETIME=`date "+%Y-%m-%d %H:%M:%S"`  # set start date and time
 FILENAME=$HOST-backup-$DATE.tar.gz     # set tar.gz filename
 LOGFILENAME=$HOST-backup-$DATE.log     # set log filename
-EXCLIST=$SCRIPTDIR/exclude.list        # exclude list
-DESDIR=$DESMNT/$HOST"test"             # set destination directory
-SLBVER="~~ sage-linux-backup version 1.0.0 27/07/2020 ~~"
+EXCLIST=$SCRIPTDIR/exclude.list        # set exclude list
+DESDIR=$DESMNT/$HOST                   # set destination directory
+SWVER="~~ sage-linux-backup version 1.0.1 02/08/2020 ~~"
 
 ##### Functions
 backup()
@@ -45,12 +47,12 @@ backup()
     LOGVAR+=$(echo -e "Backup size: $BACKUPSIZE")'\n\n'
     LOGVAR+=$(echo -e "$DESDIR contents:")'\n'
     LOGVAR+=$(echo -e "$DESDIRLS")'\n\n'
-    LOGVAR+=$(echo -e "$SLBVER")'\n'
+    LOGVAR+=$(echo -e "$SWVER")'\n'
     echo -e "$LOGVAR" | mail -s "$HOST Backup success - $DATE" $EMAIL
   else
     # DESMNT not mounted - send email
     LOGVAR=$(echo -e "$DESMNT not mounted on $HOST")'\n\n'
-    LOGVAR+=$(echo -e "$SLBVER")'\n'
+    LOGVAR+=$(echo -e "$WVER")'\n'
     echo -e "$LOGVAR" | mail -s "$HOST Backup failed - $DATE" $EMAIL
   fi
 
@@ -69,7 +71,7 @@ cleanup()
     else
       # DESMNT not mounted - send email
       LOGVAR=$(echo -e "$DESMNT not mounted on $HOST")'\n\n'
-      LOGVAR+=$(echo -e "$SLBVER")'\n'
+      LOGVAR+=$(echo -e "$SWVER")'\n'
       echo -e "$LOGVAR" | mail -s "$HOST Backup cleanup failed - $SDATETIME" $EMAIL
     fi
   fi
